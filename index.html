@@ -1,0 +1,133 @@
+<DOCTYPE html!>
+
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
+        <title>To do list</title>
+        <style type="text/css">
+            html {
+                background-color: #0b0c10
+            }
+
+            h1 {
+                color: #66fcf1;
+                font-size: 70px;
+                font-family: 'Satisfy', cursive;
+            }
+
+            h1 {
+                border-color: #99ffff;
+                border-style: solid;
+                border-width: 8px;
+                border-offset: 30px;
+                margin: 100px 80px 70;
+                border-radius: 5px 5px 5px 5px;
+            }
+
+            h1 {
+                padding-top: 10px;
+            }
+
+            li {
+                font-size: 20px;
+            }
+
+            li, #add_btn {
+                width: 99%;
+                border-radius: 15px 50px 30px;
+                border-width: 3px;
+                border-color: #66fcf1;
+                background-color: #2e2e2e;
+                color: #66fcf1;
+                padding: 10px 10px 10px 10px;
+                outline: none;
+            }
+
+            li:focus {
+                background-color: #0b0c10;
+                box-shadow: 0 0 10px inset  #66fcf1;
+            }
+
+            input {
+                width : 85% ;
+            background-color: #0000 ;
+            border : none;
+               color: #66fcf1;
+               font-size: large;
+               margin-left: 3px ;
+               margin-right: 3px;
+
+             }
+            input:focus {
+                outline: none ;
+            }
+
+            ol {
+                margin: 10px;
+                color: #99ffff;
+                font-size: 23px
+            }
+
+            #add_btn {
+                width: 50%;
+                display: flex;
+                margin: 3px;
+                margin-left: auto;
+                margin-right: auto;
+                outline: none;
+            }
+
+
+            #add_btn:focus {
+                background-color: #2e2e2e;
+                box-shadow: none;
+            }
+
+            #add_btn:active {
+                background-color #2e2e2e;
+                 box-shadow: 0 0 20px inset  black;
+            }
+
+            div.ex1 {  }
+
+        </style>
+
+        <script>
+
+
+
+            function addTodo() {
+
+            }
+
+            document.getElementById("add_btn").addEventListener( click , addTodo )
+
+        </script>
+
+
+    </head>
+    <h1 align="center">To do list</h1>
+
+    <body>
+        <div class="ex1">
+            <p>
+            <ol>
+                <li><input type="text" name="objective" ></li>
+                <br>
+                <li><input type="text" name="objective"></li>
+                <br>
+                <li><input type="text" name="objective"></li>
+                <br>
+                <li><input type="text" name="objective"></li>
+                <br>
+                <li><input type="text" name="objective"></li>
+                <br>
+                <li><input type="text" name="objective">
+                <img  src="remove-circle-outline.svg" alt="remove" height="28" width="auto"> </li>
+                <br>
+            </ol>
+            </p>
+        </div>
+        <input type="image"  id="add_btn" src="add-circle-outline.svg" alt="Add" width="50" height="48">
+    </body>
+
+    </html>
