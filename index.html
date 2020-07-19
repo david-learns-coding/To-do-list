@@ -1,6 +1,8 @@
 <DOCTYPE html!>
 
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
         <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
         <title>To do list</title>
         <style type="text/css">
@@ -10,7 +12,6 @@
 
             h1 {
                 color: #66fcf1;
-                font-size: 70px;
                 font-family: 'Satisfy', cursive;
             }
 
@@ -41,7 +42,19 @@
                 color: #66fcf1;
                 padding: 10px 10px 10px 10px;
                 outline: none;
-                margin-bottom: 15px ;
+                margin-bottom: 15px;
+
+            }
+
+            .todo {
+                display: flex;
+                flex-direction: row;
+
+            }
+
+
+            li::marker {
+                color: aliceblue;
             }
 
             li:focus {
@@ -86,7 +99,7 @@
             }
 
             #add_btn:active {
-                background-color : #2e2e2e;
+                background-color: #2e2e2e;
                 box-shadow: 0 0 20px inset black;
             }
 
@@ -103,8 +116,12 @@
         <div class="ex1">
             <p>
             <ol id="container">
-                <li><input type="text" class="input" name="objective">
-                    <img src="remove-circle-outline.svg" alt="remove" class="remove_btn" height="38" width="auto">
+                <li>
+                    <div class="todo"><input type="text" class="input" name="objective">
+
+
+                        <img src="remove-circle-outline.svg" alt="remove" class="remove_btn" height="38" width="auto">
+                    </div>
                 </li>
 
 
@@ -115,113 +132,119 @@
 
 
         <script>
-
-
-            function addTodo() {
-                let Todo = document.createElement("li")
-                Todo.innerHTML = `<input type="text" class="input" name="objective"/>
-                    <img src="remove-circle-outline.svg" alt="remove" class="remove_btn" height="38" width="auto"/>`
-
-                document.getElementById("container").appendChild(Todo)
-                activate_remove_btns()
-            }
-
-
-            function removeTodo(evt) {
-                evt.target.parentElement.parentElement.removeChild(evt.target.parentElement)
-
-            }
-
-            document.getElementById("add_btn").addEventListener("click", addTodo)
-
-
-
-            function activate_remove_btns () {
-                const remove_btns = document.getElementsByClassName("remove_btn")
-
-                for (let index = 0; index < remove_btns.length; index++) {
-                    const element = remove_btns.item(index);
-
-                    element.addEventListener( "click", removeTodo )
-
-                }
-            }
-
-
-
-
-
-
+            // all the inputs fields stored in one var
             let allInputs = document.getElementsByClassName("input");
 
+            // name of the cache on user device
             const CACHE_NAME = "TODO_v1.0_data";
 
 
-            // saving all the data
+
+            // saving data when user is typing
+            window.addEventListener("keydown", (evt) => {
+                if (evt.key == "Enter") {
+                    addTodo();
+                }
+                saveTodos();
+            });
+
+            // saving data on clicks
+            window.addEventListener("click", () => {
+                saveTodos();
+            });
+
+            // loading in all the data when page loads
+            window.addEventListener("load", () => {
+                loadTodos()
+            });
+
+            // activating the remove btn
+            document.getElementById("add_btn").addEventListener("click", addTodo);
 
 
-            function save_everything() {
+            /**
+             * @description loads all the user data [ todos ]
+             */
+            function loadTodos() {
+                let allData = JSON.parse(localStorage.getItem(CACHE_NAME));
 
+                for (let elemId = 0; elemId < allData.length; elemId++) {
+                    let element = allInputs.item(elemId);
+
+                    if (element == null) {
+                        addTodo();
+                        allInputs = document.getElementsByClassName("input");
+                        element = allInputs.item(elemId);
+                    }
+
+                    if ((allData !== null) | (allData[elemId] != "")) {
+                        element.value = allData[elemId];
+                    }
+                }
+                // activating all remove btns
+                activateRemoveBtns();
+            }
+
+
+            /**
+             * @description saves all the user data [todos ]
+             */
+            function saveTodos() {
                 let allData = [];
 
-                for (let elem_num = 0; elem_num < allInputs.length; elem_num++) {
-                    const element = allInputs.item(elem_num);
+                for (let elemId = 0; elemId < allInputs.length; elemId++) {
+                    const element = allInputs.item(elemId);
 
                     allData.push(element.value);
                 }
 
                 localStorage.setItem(CACHE_NAME, JSON.stringify(allData));
-
             }
 
-            window.addEventListener("keydown", (evt) => {
 
-                if ( evt.key == "Enter" ){
-                    addTodo
+            /**
+             * @description adds a todo element to the document
+             */
+
+            function addTodo() {
+                // make a todo li item
+                let todo = document.createElement("li");
+                todo.innerHTML = ` <div class="todo">  <input type="text" class="input" name="objective">
+
+
+                        <img src="remove-circle-outline.svg" alt="remove" class="remove_btn" height="38" width="auto">
+                    </div>`;
+
+                // add it to the document
+                document.getElementById("container").appendChild(todo);
+                //activate the remove btns
+                activateRemoveBtns();
+            }
+
+            /**
+             * @description removes the todo whose remove btn was clicked
+             * @param {MouseEvent} evt event to be used to remove parent element
+             */
+            function removeTodo(evt) {
+                // remove event's todo div element and li element  from DOM
+
+                evt.target.parentElement.parentElement.parentElement.removeChild(evt.target.parentElement.parentElement);
+            }
+
+
+            /**
+             *  adds appropriate event listeners to the remove buttons
+             */
+            function activateRemoveBtns() {
+                // activate all the remove btns by adding appropriate event listeners
+                const removeBtns = document.getElementsByClassName("remove_btn");
+
+                for (let index = 0; index < removeBtns.length; index++) {
+                    const element = removeBtns.item(index);
+
+                    element.addEventListener("click", removeTodo);
                 }
-
-                save_everything()
-
             }
-            )
-
-            // saving data on clicks
-            window.addEventListener( "click", () => {
-              save_everything()
-
-            }
-            )
-
-
-            // loading in all the data
-            window.addEventListener("load", () => {
-                let allData = JSON.parse(localStorage.getItem(CACHE_NAME));
-
-
-                for (let elem_num = 0; elem_num < allData.length; elem_num++) {
-                    let element = allInputs.item(elem_num);
-
-
-                    if (element == null) {
-                        addTodo()
-                        allInputs =  document.getElementsByClassName("input");
-                        element = allInputs.item(elem_num);
-
-                    }
-
-                    if (allData !== null | allData[elem_num] != "") {
-                        element.value = allData[elem_num];
-                    }
-
-
-                }
-
-                activate_remove_btns()
-            });
-
-
-
-
 
 
 
