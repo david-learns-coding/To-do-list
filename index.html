@@ -31,7 +31,8 @@
                 font-size: 20px;
             }
 
-            li, #add_btn {
+            li,
+            #add_btn {
                 width: 99%;
                 border-radius: 15px 50px 30px;
                 border-width: 3px;
@@ -40,25 +41,27 @@
                 color: #66fcf1;
                 padding: 10px 10px 10px 10px;
                 outline: none;
+                margin-bottom: 15px ;
             }
 
             li:focus {
                 background-color: #0b0c10;
-                box-shadow: 0 0 10px inset  #66fcf1;
+                box-shadow: 0 0 10px inset #66fcf1;
             }
 
             input {
-                width : 85% ;
-            background-color: #0000 ;
-            border : none;
-               color: #66fcf1;
-               font-size: large;
-               margin-left: 3px ;
-               margin-right: 3px;
+                width: 85%;
+                background-color: #0000;
+                border: none;
+                color: #66fcf1;
+                font-size: large;
+                margin-left: 3px;
+                margin-right: 3px;
 
-             }
+            }
+
             input:focus {
-                outline: none ;
+                outline: none;
             }
 
             ol {
@@ -84,24 +87,13 @@
 
             #add_btn:active {
                 background-color #2e2e2e;
-                 box-shadow: 0 0 20px inset  black;
+                box-shadow: 0 0 20px inset black;
             }
 
-            div.ex1 {  }
+            div.ex1 {}
 
         </style>
 
-        <script>
-
-
-
-            function addTodo() {
-
-            }
-
-            document.getElementById("add_btn").addEventListener( click , addTodo )
-
-        </script>
 
 
     </head>
@@ -110,24 +102,127 @@
     <body>
         <div class="ex1">
             <p>
-            <ol>
-                <li><input type="text" name="objective" ></li>
-                <br>
-                <li><input type="text" name="objective"></li>
-                <br>
-                <li><input type="text" name="objective"></li>
-                <br>
-                <li><input type="text" name="objective"></li>
-                <br>
-                <li><input type="text" name="objective"></li>
-                <br>
-                <li><input type="text" name="objective">
-                <img  src="remove-circle-outline.svg" alt="remove" height="28" width="auto"> </li>
-                <br>
+            <ol id="container">
+                <li><input type="text" class="input" name="objective">
+                    <img src="remove-circle-outline.svg" alt="remove" class="remove_btn" height="28" width="auto">
+                </li>
+              
+
             </ol>
             </p>
         </div>
-        <input type="image"  id="add_btn" src="add-circle-outline.svg" alt="Add" width="50" height="48">
+        <input type="image" id="add_btn" src="add-circle-outline.svg" alt="Add" width="50" height="48">
+
+
+        <script>
+
+
+            function addTodo() {
+                let Todo = document.createElement("li")
+                Todo.innerHTML = `<input type="text" class="input" name="objective"/>
+                    <img src="remove-circle-outline.svg" alt="remove" class="remove_btn" height="28" width="auto"/>`
+
+                document.getElementById("container").appendChild(Todo)
+                activate_remove_btns()
+            }
+
+
+            function removeTodo(evt) {
+                evt.target.parentElement.parentElement.removeChild(evt.target.parentElement)
+
+            }
+
+            document.getElementById("add_btn").addEventListener("click", addTodo)
+
+
+
+            function activate_remove_btns () {
+                const remove_btns = document.getElementsByClassName("remove_btn")
+
+                for (let index = 0; index < remove_btns.length; index++) {
+                    const element = remove_btns.item(index);
+
+                    element.addEventListener( "click", removeTodo )
+
+                }
+            }
+
+
+
+
+            let allInputs = document.getElementsByClassName("input");
+
+            const CACHE_NAME = "TODO_v1.0_data";
+
+
+            // saving all the data
+
+
+            function save_everything() {
+
+                let allData = [];
+
+                for (let elem_num = 0; elem_num < allInputs.length; elem_num++) {
+                    const element = allInputs.item(elem_num);
+
+                    allData.push(element.value);
+                }
+
+                localStorage.setItem(CACHE_NAME, JSON.stringify(allData));
+
+            }
+
+            window.addEventListener("keydown", () => {
+
+                save_everything()
+
+            }
+            )
+
+            // saving data on clicks
+            window.addEventListener( "click", () => {
+              save_everything()
+
+            }
+            )
+
+
+            // loading in all the data
+            window.addEventListener("load", () => {
+                let allData = JSON.parse(localStorage.getItem(CACHE_NAME));
+
+
+                for (let elem_num = 0; elem_num < allData.length; elem_num++) {
+                    let element = allInputs.item(elem_num);
+
+
+                    if (element == null) {
+                        addTodo()
+                        allInputs =  document.getElementsByClassName("input");
+                        element = allInputs.item(elem_num);
+
+                    }
+
+                    if (allData !== null | allData[elem_num] != "") {
+                        element.value = allData[elem_num];
+                    }
+
+
+                }
+
+                activate_remove_btns()
+            });
+
+
+
+
+
+
+
+        </script>
+
+
+
     </body>
 
     </html>
