@@ -150,6 +150,8 @@
 
 
 
+
+
             let allInputs = document.getElementsByClassName("input");
 
             const CACHE_NAME = "TODO_v1.0_data";
@@ -172,7 +174,11 @@
 
             }
 
-            window.addEventListener("keydown", () => {
+            window.addEventListener("keydown", (evt) => {
+
+                if ( evt.key == "Enter" ){
+                    addTodo
+                }
 
                 save_everything()
 
