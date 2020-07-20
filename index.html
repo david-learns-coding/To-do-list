@@ -1,91 +1,260 @@
 <DOCTYPE html!>
-<head>
-<link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
-<title>To do list</title>
-<style type="text/css">
-html{background-color:#0b0c10
-}
-h1{
-color:#66fcf1;
-font-size:70px;
-font-family: 'Satisfy', cursive;}
-h1{border-colour:#99ffff;
-border-style:solid;
-border-width:8px;
-border-offset:30px;
-margin:100px 80px 70;
-border-radius: 5px 5px 5px 5px; 
-}
-h1{padding-top:10px;
-}
-input{font-size:20px;
-}
-input{width:99%;
-border-radius: 15px 50px 30px; 
-border-width:3px;
-border-color:#66fcf1;
-background-color:#2e2e2e;
-color:#66fcf1;
-padding: 10px 10px 10px 10px
-}
-ol{margin:10px;
-color:#99ffff;
-font-size:23px
-}
-div.ex1{
-}
-</style>
-</head>
-<h1 align="center">To do list</h1>
-<body>
-<div class="ex1">
-<p>
-<ol>
-<li><input type="text" name="objective" id="autosave"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-<li><input type="text" name="objective"></li>
-<br>
-</ol>
-</p>
-</div>
-<input type="image" src="add-circle-outline.svg" alt="Add" width="100" height="48">
-<input type="image" src="remove-circle-outline.svg" alt="Remove" width="100" height="48">
-<input type="button" value="Save"
-</body>
-</html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
+        <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
+        <title>To do list</title>
+        <style type="text/css">
+            html {
+                background-color: #0b0c10
+            }
+
+            h1 {
+                color: #66fcf1;
+                font-family: 'Satisfy', cursive;
+            }
+
+            h1 {
+                border-color: #99ffff;
+                border-style: solid;
+                border-width: 8px;
+                border-offset: 30px;
+                margin: 100px 80px 70;
+                border-radius: 5px 5px 5px 5px;
+            }
+
+            h1 {
+                padding-top: 10px;
+            }
+
+            li {
+                font-size: 20px;
+            }
+
+            li,
+            #add_btn {
+                width: 99%;
+                border-radius: 15px 50px 30px;
+                border-width: 3px;
+                border-color: #66fcf1;
+                background-color: #2e2e2e;
+                color: #66fcf1;
+                padding: 10px 10px 10px 10px;
+                outline: none;
+                margin-bottom: 15px;
+
+            }
+
+            .todo {
+                display: flex;
+                flex-direction: row;
+
+            }
+
+
+            li::marker {
+                color: aliceblue;
+            }
+
+            li:focus {
+                background-color: #0b0c10;
+                box-shadow: 0 0 10px inset #66fcf1;
+            }
+
+            input {
+                width: 85%;
+                background-color: #0000;
+                border: none;
+                color: #66fcf1;
+                font-size: large;
+                margin-left: 3px;
+                margin-right: 3px;
+
+            }
+
+            input:focus {
+                outline: none;
+            }
+
+            ol {
+                margin: 10px;
+                color: #99ffff;
+                font-size: 23px
+            }
+
+            #add_btn {
+                width: 50%;
+                display: flex;
+                margin: 3px;
+                margin-left: auto;
+                margin-right: auto;
+                outline: none;
+            }
+
+
+            #add_btn:focus {
+                background-color: #2e2e2e;
+                box-shadow: none;
+            }
+
+            #add_btn:active {
+                background-color: #2e2e2e;
+                box-shadow: 0 0 20px inset black;
+            }
+
+            div.ex1 {}
+
+        </style>
+
+
+
+    </head>
+    <h1 align="center">To do list</h1>
+
+    <body>
+        <div class="ex1">
+            <p>
+            <ol id="container">
+                <li>
+                    <div class="todo"><input type="text" class="input" name="objective">
+
+
+                        <img src="remove-circle-outline.svg" alt="remove" class="remove_btn" height="38" width="auto">
+                    </div>
+                </li>
+
+
+            </ol>
+            </p>
+        </div>
+        <input type="image" id="add_btn" src="add-circle-outline.svg" alt="Add" width="50" height="48">
+
+
+        <script>
+            // all the inputs fields stored in one var
+            let allInputs = document.getElementsByClassName("input");
+
+            // name of the cache on user device
+            const CACHE_NAME = "TODO_v1.0_data";
+
+
+
+            // saving data when user is typing
+            window.addEventListener("keydown", (evt) => {
+                if (evt.key == "Enter") {
+                    addTodo();
+                }
+                saveTodos();
+            });
+
+            // saving data on clicks
+            window.addEventListener("click", () => {
+                saveTodos();
+            });
+
+            // loading in all the data when page loads
+            window.addEventListener("load", () => {
+                loadTodos()
+            });
+
+            // activating the remove btn
+            document.getElementById("add_btn").addEventListener("click", addTodo);
+
+
+            /**
+             * @description loads all the user data [ todos ]
+             */
+            function loadTodos() {
+                let allData = JSON.parse(localStorage.getItem(CACHE_NAME));
+
+                for (let elemId = 0; elemId < allData.length; elemId++) {
+                    let element = allInputs.item(elemId);
+
+                    if (element == null) {
+                        addTodo();
+                        allInputs = document.getElementsByClassName("input");
+                        element = allInputs.item(elemId);
+                    }
+
+                    if ((allData !== null) | (allData[elemId] != "")) {
+                        element.value = allData[elemId];
+                    }
+                }
+                // activating all remove btns
+                activateRemoveBtns();
+            }
+
+
+            /**
+             * @description saves all the user data [todos ]
+             */
+            function saveTodos() {
+                let allData = [];
+
+                for (let elemId = 0; elemId < allInputs.length; elemId++) {
+                    const element = allInputs.item(elemId);
+
+                    allData.push(element.value);
+                }
+
+                localStorage.setItem(CACHE_NAME, JSON.stringify(allData));
+            }
+
+
+            /**
+             * @description adds a todo element to the document
+             */
+
+            function addTodo() {
+                // make a todo li item
+                let todo = document.createElement("li");
+                todo.innerHTML = ` <div class="todo">  <input type="text" class="input" name="objective">
+
+
+                        <img src="remove-circle-outline.svg" alt="remove" class="remove_btn" height="38" width="auto">
+                    </div>`;
+
+                // add it to the document
+                document.getElementById("container").appendChild(todo);
+                //activate the remove btns
+                activateRemoveBtns();
+            }
+
+            /**
+             * @description removes the todo whose remove btn was clicked
+             * @param {MouseEvent} evt event to be used to remove parent element
+             */
+            function removeTodo(evt) {
+                // remove event's todo div element and li element  from DOM
+
+                evt.target.parentElement.parentElement.parentElement.removeChild(evt.target.parentElement.parentElement);
+            }
+
+
+            /**
+             *  adds appropriate event listeners to the remove buttons
+             */
+            function activateRemoveBtns() {
+                // activate all the remove btns by adding appropriate event listeners
+                const removeBtns = document.getElementsByClassName("remove_btn");
+
+                for (let index = 0; index < removeBtns.length; index++) {
+                    const element = removeBtns.item(index);
+
+                    element.addEventListener("click", removeTodo);
+                }
+            }
+
+
+
+        </script>
+
+
+
+    </body>
+
+    </html>
+
+
